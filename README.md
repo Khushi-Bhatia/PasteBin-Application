@@ -10,13 +10,16 @@ This project demonstrates backend API design, database persistence, and frontend
 ## Application Preview
 
 ### Create Paste Page
-![Create Paste](screenshots/CreatePage.jpg)
+![Create Paste]([CreatePage](https://github.com/user-attachments/assets/868cea0a-d7ee-4081-b569-1f6738c70297)
+)
 
 ### View Paste Page
-![View Paste](screenshots/PasteView.jpg)
+![View Paste]()
+![PasteView](https://github.com/user-attachments/assets/83d8ad47-06e1-43c2-93c7-a676f3ffebfd)
 
 ### Paste Example
-![Paste Example](screenshots/PasteDetails.jpg)
+![Paste Example]()
+![PasteDetails](https://github.com/user-attachments/assets/50d13a28-cede-4209-84a9-f56fd94a84a2)
 
 ---
 
