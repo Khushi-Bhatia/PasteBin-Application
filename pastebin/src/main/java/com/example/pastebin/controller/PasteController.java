@@ -37,9 +37,13 @@ public class PasteController {
         Paste p = service.create(req, request.getRequestURL().toString());
 
         // UPDATED: return React URL instead of Spring HTML URL
+//        return Map.of(
+//                "id", p.getId(),
+//                "url", "http://localhost:5173/p/" + p.getId()
+//        );
+
         return Map.of(
-                "id", p.getId(),
-                "url", "http://localhost:5173/p/" + p.getId()
+                "id", p.getId()
         );
     }
 

@@ -9,25 +9,46 @@ export default function ViewPaste() {
   const [expiresAt, setExpiresAt] = useState(null);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/api/pastes/${id}`)
-      .then((res) => {
-        if (!res.ok) {
-          setError(true);
-          return;
-        }
-        return res.json();
-      })
-      .then((data) => {
-        if (data) {
-          setContent(data.content);
-          setRemainingViews(data.remaining_views);
-          setExpiresAt(data.expires_at);
-        }
-      })
-      .catch(() => setError(true));
-  }, [id]);
+  // useEffect(() => {
+  //   fetch(`http://localhost:8080/api/pastes/${id}`)
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         setError(true);
+  //         return;
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       if (data) {
+  //         setContent(data.content);
+  //         setRemainingViews(data.remaining_views);
+  //         setExpiresAt(data.expires_at);
+  //       }
+  //     })
+  //     .catch(() => setError(true));
+  // }, [id]);
 
+
+const API = import.meta.env.VITE_API_URL;
+
+useEffect(() => {
+  fetch(`${API}/api/pastes/${id}`)
+    .then((res) => {
+      if (!res.ok) {
+        setError(true);
+        return;
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data) {
+        setContent(data.content);
+        setRemainingViews(data.remaining_views);
+        setExpiresAt(data.expires_at);
+      }
+    })
+    .catch(() => setError(true));
+}, [id]);
   if (error) return <h2>Paste Not Found</h2>;
 
   return (
