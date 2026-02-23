@@ -1,183 +1,96 @@
-// import { useState } from "react";
+import { useState } from "react";
 
-// export default function CreatePaste() {
-//   const [content, setContent] = useState("");
-//   const [ttl, setTtl] = useState("");
-//   const [maxViews, setMaxViews] = useState("");
-//   const [resultUrl, setResultUrl] = useState("");
+// Make sure VITE_API_URL is set in your Render environment
+const API = import.meta.env.VITE_API_URL;
 
-//   const createPaste = async () => {
-//     const body = {
-//       content,
-//       ttl_seconds: ttl ? parseInt(ttl) : null,
-//       max_views: maxViews ? parseInt(maxViews) : null,
-//     };
+export default function CreatePaste() {
+  const [content, setContent] = useState("");
+  const [ttl, setTtl] = useState(""); // Time to live in seconds
+  const [maxViews, setMaxViews] = useState(""); // Maximum allowed views
+  const [resultUrl, setResultUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
-//     const response = await fetch("http://localhost:8080/api/pastes", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(body),
-//     });
-
-//     if (!response.ok) {
-//       alert("Error creating paste");
-//       return;
-//     }
-
-//     const data = await response.json();
-//     setResultUrl(data.url);
-//   };
-
-//   return (
-//     <div style={{ padding: 40 }}>
-//       <h2>Create Paste</h2>
-
-//       <textarea
-//         rows="10"
-//         cols="60"
-//         placeholder="Enter text..."
-//         value={content}
-//         onChange={(e) => setContent(e.target.value)}
-//       />
-
-//       <br /><br />
-
-//       <input
-//         type="number"
-//         placeholder="TTL (seconds)"
-//         value={ttl}
-//         onChange={(e) => setTtl(e.target.value)}
-//       />
-
-//       <input
-//         type="number"
-//         placeholder="Max Views"
-//         value={maxViews}
-//         onChange={(e) => setMaxViews(e.target.value)}
-//       />
-
-//       <br /><br />
-
-//       <button onClick={createPaste}>Create</button>
-
-//       {resultUrl && (
-//         <p>
-//           Share Link: <a href={resultUrl}>{resultUrl}</a>
-//         </p>
-//       )}
-//     </div>
-//   );
-// }
-
-
-// import { useState } from "react";
-
-// const API = import.meta.env.VITE_API_URL;
-
-// export default function CreatePaste() {
-//   const [content, setContent] = useState("");
-//   const [ttl, setTtl] = useState("");
-//   const [maxViews, setMaxViews] = useState("");
-//   const [resultUrl, setResultUrl] = useState("");
-
-//   const createPaste = async () => {
-//     const body = {
-//       content,
-//       ttl_seconds: ttl ? parseInt(ttl) : null,
-//       max_views: maxViews ? parseInt(maxViews) : null,
-//     };
-
-//     try {
-//       const response = await fetch(`${API}/api/pastes`, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(body),
-//       });
-
-//       if (!response.ok) {
-//         alert("Error creating paste");
-//         return;
-//       }
-
-//       const data = await response.json();
-//       setResultUrl(data.url);
-
-//     } catch (error) {
-//       console.error(error);
-//       alert("Server not reachable");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: 40 }}>
-//       <h2>Create Paste</h2>
-
-//       <textarea
-//         rows="10"
-//         cols="60"
-//         placeholder="Enter text..."
-//         value={content}
-//         onChange={(e) => setContent(e.target.value)}
-//       />
-
-//       <br /><br />
-
-//       <input
-//         type="number"
-//         placeholder="TTL (seconds)"
-//         value={ttl}
-//         onChange={(e) => setTtl(e.target.value)}
-//       />
-
-//       <input
-//         type="number"
-//         placeholder="Max Views"
-//         value={maxViews}
-//         onChange={(e) => setMaxViews(e.target.value)}
-//       />
-
-//       <br /><br />
-
-//       <button onClick={createPaste}>Create</button>
-
-//       {resultUrl && (
-//         <p>
-//           Share Link: <a href={resultUrl}>{resultUrl}</a>
-//         </p>
-//       )}
-//     </div>
-//   );
-// }
-
-
-
-const createPaste = async () => {
-  const body = {
-    content,
-    ttl_seconds: ttl ? parseInt(ttl) : null,
-    max_views: maxViews ? parseInt(maxViews) : null,
-  };
-
-  try {
-    const response = await fetch(`${API}/api/pastes`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (!response.ok) {
-      alert("Error creating paste");
+  const createPaste = async () => {
+    if (!content.trim()) {
+      alert("Content cannot be empty");
       return;
     }
 
-    const data = await response.json();
+    const body = {
+      content,
+      ttl_seconds: ttl ? parseInt(ttl) : null,
+      max_views: maxViews ? parseInt(maxViews) : null,
+    };
 
-    // 🔥 Generate frontend URL dynamically
-    const shareUrl = `${window.location.origin}/p/${data.id}`;
-    setResultUrl(shareUrl);
+    try {
+      setLoading(true);
+      const response = await fetch(`${API}/api/pastes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-  } catch (error) {
-    console.error(error);
-    alert("Server not reachable");
-  }
-};
+      if (!response.ok) {
+        alert("Error creating paste");
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+      const shareUrl = `${window.location.origin}/p/${data.id}`;
+      setResultUrl(shareUrl);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      alert("Server not reachable");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ padding: 40, maxWidth: 600, margin: "0 auto" }}>
+      <h2>Create a New Paste</h2>
+
+      <textarea
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="Paste your text here..."
+        rows={8}
+        style={{ width: "100%", marginBottom: 10 }}
+      />
+
+      <input
+        type="number"
+        value={ttl}
+        onChange={(e) => setTtl(e.target.value)}
+        placeholder="Time to live (seconds)"
+        style={{ width: "100%", marginBottom: 10, padding: 8 }}
+      />
+
+      <input
+        type="number"
+        value={maxViews}
+        onChange={(e) => setMaxViews(e.target.value)}
+        placeholder="Max views"
+        style={{ width: "100%", marginBottom: 10, padding: 8 }}
+      />
+
+      <button
+        onClick={createPaste}
+        disabled={loading}
+        style={{ padding: "10px 20px", cursor: "pointer" }}
+      >
+        {loading ? "Creating..." : "Create Paste"}
+      </button>
+
+      {resultUrl && (
+        <div style={{ marginTop: 20 }}>
+          <strong>Share URL:</strong>{" "}
+          <a href={resultUrl} target="_blank" rel="noopener noreferrer">
+            {resultUrl}
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
