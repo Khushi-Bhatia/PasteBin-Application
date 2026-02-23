@@ -47,12 +47,9 @@ useEffect(() => {
         setExpiresAt(data.expires_at);
       }
     })
-    // .catch(() => setError(true));
+    .catch(() => setError(true));
 
-     .catch((err) => {
-      console.error("Fetch error:", err);
-      setError(true);
-    });
+     
 
 }, [id]);
   if (error) return <h2>Paste Not Found</h2>;
