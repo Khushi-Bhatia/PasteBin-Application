@@ -14,7 +14,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.time.Instant;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://pastebin-backend-gzqz.onrender.com")
 @RestController
 public class PasteController {
 
