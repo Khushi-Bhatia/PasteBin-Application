@@ -101,12 +101,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.Map;
-
-@CrossOrigin(
-        origins = "https://pastebin-application-i63f.onrender.com",
-        allowedHeaders = "*",
-        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}
-)
+//
+//@CrossOrigin(
+//        origins = "https://pastebin-application-i63f.onrender.com",
+//        allowedHeaders = "*",
+//        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS}
+//)
 @RestController
 @RequestMapping("/api/pastes")
 public class PasteController {
